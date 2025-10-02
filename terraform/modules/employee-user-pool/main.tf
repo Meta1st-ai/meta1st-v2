@@ -87,10 +87,15 @@ resource "aws_cognito_user_pool" "employee_pool" {
     post_authentication = var.post_auth_lambda_arn
     user_migration      = var.user_migration_lambda_arn
   }
+
+  lifecycle {
+    ignore_changes = [schema]
+  }
 }
 
 # SAML Identity Provider for Azure AD
 resource "aws_cognito_identity_provider" "azure_ad" {
+  count         = var.azure_metadata_url != "" ? 1 : 0
   user_pool_id  = aws_cognito_user_pool.employee_pool.id
   provider_name = "AzureAD"
   provider_type = "SAML"

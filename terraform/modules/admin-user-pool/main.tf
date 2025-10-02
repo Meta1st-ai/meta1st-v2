@@ -75,6 +75,10 @@ resource "aws_cognito_user_pool" "admin_pool" {
     post_authentication = var.post_auth_lambda_arn
     user_migration      = var.user_migration_lambda_arn
   }
+
+  lifecycle {
+    ignore_changes = [schema]
+  }
 }
 
 # Domain for Admin User Pool
