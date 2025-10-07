@@ -115,7 +115,7 @@ resource "aws_cognito_identity_provider" "azure_ad" {
 
 # App Client for Employee User Pool
 resource "aws_cognito_user_pool_client" "employee_app_client" {
-  name         = "MetaFirst-Employee-Client"
+  name         = "Demo-MetaFirst-Employee-Client"
   user_pool_id = aws_cognito_user_pool.employee_pool.id
 
   generate_secret               = false
@@ -133,7 +133,7 @@ resource "aws_cognito_user_pool_client" "employee_app_client" {
 
 # Domain for Hosted UI (required for SAML)
 resource "aws_cognito_user_pool_domain" "employee_domain" {
-  domain       = "metafirst-employees-${random_string.domain_suffix.result}"
+  domain       = "demo-metafirst-employees-${random_string.domain_suffix.result}"
   user_pool_id = aws_cognito_user_pool.employee_pool.id
 }
 
