@@ -1,7 +1,7 @@
 data "aws_region" "current" {}
 
 resource "aws_cognito_user_pool" "employee_pool" {
-  name = var.pool_name
+  name = "${var.environment}-${var.pool_name}"
 
   username_configuration {
     case_sensitive = false
@@ -95,7 +95,7 @@ resource "aws_cognito_user_pool" "employee_pool" {
 
 # SAML Identity Provider for Azure AD
 resource "aws_cognito_identity_provider" "azure_ad" {
-  count         = var.azure_metadata_url != "" ? 1 : 0
+  #count         = var.azure_metadata_url != "" ? 1 : 0
   user_pool_id  = aws_cognito_user_pool.employee_pool.id
   provider_name = "AzureAD"
   provider_type = "SAML"
@@ -115,7 +115,7 @@ resource "aws_cognito_identity_provider" "azure_ad" {
 
 # App Client for Employee User Pool
 resource "aws_cognito_user_pool_client" "employee_app_client" {
-  name         = "Demo-MetaFirst-Employee-Client"
+  name         = "${var.environment}-${var.pool_name}-Client"
   user_pool_id = aws_cognito_user_pool.employee_pool.id
 
   generate_secret               = false
@@ -133,7 +133,7 @@ resource "aws_cognito_user_pool_client" "employee_app_client" {
 
 # Domain for Hosted UI (required for SAML)
 resource "aws_cognito_user_pool_domain" "employee_domain" {
-  domain       = "demo-metafirst-employees-${random_string.domain_suffix.result}"
+  domain       = "${var.environment}-metafirst-employees-${random_string.domain_suffix.result}"
   user_pool_id = aws_cognito_user_pool.employee_pool.id
 }
 

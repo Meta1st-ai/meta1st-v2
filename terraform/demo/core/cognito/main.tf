@@ -4,7 +4,8 @@
 module "admin_user_pool" {
   source = "../../../modules/admin-user-pool"
 
-  pool_name                 = "Demo-MetaFirst-Admin-UserPool"
+  environment               = var.environment
+  pool_name                 = var.admin_user_pool_name
   pre_auth_lambda_arn       = module.lambda_functions.pre_auth_arn
   post_auth_lambda_arn      = module.lambda_functions.post_auth_arn
   user_migration_lambda_arn = module.lambda_functions.user_migration_arn
@@ -16,7 +17,8 @@ module "admin_user_pool" {
 module "employee_user_pool" {
   source = "../../../modules/employee-user-pool"
 
-  pool_name                 = "Demo-MetaFirst-Employee-UserPool"
+  environment               = var.environment
+  pool_name                 = var.employee_user_pool_name
   aws_region                = var.aws_region
   azure_metadata_url        = var.azure_metadata_url
   pre_auth_lambda_arn       = module.lambda_functions.pre_auth_arn
@@ -30,6 +32,7 @@ module "employee_user_pool" {
 module "lambda_functions" {
   source = "../../../modules/lambda-functions"
 
+  environment         = var.environment
   lambda_runtime      = var.lambda_runtime
   lambda_architecture = var.lambda_architecture
 }
@@ -38,7 +41,9 @@ module "lambda_functions" {
 # Sync Cognito with Azure AD Module
 ####################################################################
 module "sync_cognito_azuread" {
-  source                   = "../../../modules/sync-cognito-azuread"
+  source = "../../../modules/sync-cognito-azuread"
+
+  environment              = var.environment
   azure_tenant_id          = var.azure_tenant_id
   azure_client_id          = var.azure_client_id
   azure_client_secret      = var.azure_client_secret

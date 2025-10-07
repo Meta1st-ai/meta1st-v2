@@ -1,10 +1,11 @@
 resource "aws_lambda_function" "sync_cognito_with_azuread" {
-  filename      = "${path.module}/lambda/zipped/sync_cognito_with_azuread.zip"
-  function_name = "sync-cognito-with-azuread"
-  role          = aws_iam_role.sync_lambda_role.arn
-  handler       = "sync.handler"
-  runtime       = var.sync_lambda_runtime
-  architectures = [var.sync_lambda_architecture]
+  source_code_hash = filebase64sha256("${path.module}/lambda/zipped/sync_cognito_with_azuread.zip")
+  filename         = "${path.module}/lambda/zipped/sync_cognito_with_azuread.zip"
+  function_name    = "${var.environment}-sync-cognito-with-azuread"
+  role             = aws_iam_role.sync_lambda_role.arn
+  handler          = "sync_cognito_with_azuread.handler"
+  runtime          = var.sync_lambda_runtime
+  architectures    = [var.sync_lambda_architecture]
 
   # Environment variables for Azure AD and Cognito
   environment {
@@ -18,7 +19,7 @@ resource "aws_lambda_function" "sync_cognito_with_azuread" {
 }
 
 resource "aws_iam_role" "sync_lambda_role" {
-  name = "sync-cognito-azuread-lambda-role"
+  name = "${var.environment}-sync-cognito-azuread-lambda-role"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -41,13 +42,13 @@ resource "aws_iam_role_policy_attachment" "sync_lambda_basic" {
 
 # Optionally, add a CloudWatch Event Rule to trigger the Lambda on a schedule
 resource "aws_cloudwatch_event_rule" "sync_schedule" {
-  name                = "sync-cognito-azuread-schedule"
+  name                = "${var.environment}-sync-cognito-azuread-schedule"
   schedule_expression = "rate(1 day)"
 }
 
 resource "aws_cloudwatch_event_target" "sync_lambda_target" {
   rule      = aws_cloudwatch_event_rule.sync_schedule.name
-  target_id = "sync-cognito-azuread-lambda"
+  target_id = "${var.environment}-sync-cognito-azuread-lambda"
   arn       = aws_lambda_function.sync_cognito_with_azuread.arn
 }
 

@@ -11,21 +11,21 @@ This directory contains the Terraform backend infrastructure (S3 bucket and Dyna
 
 1. **Deploy Backend First** (this directory):
    ```bash
-   cd /home/david/metafirst/prod/backend
+   cd <..>/metafirst/demo/backend
    terraform init
-   terraform plan --var-file=prod.tfvars
-   terraform apply --var-file=prod.tfvars
+   terraform plan
+   terraform apply 
    ```
 
 2. **Update Main Application Backend Configuration**:
-   - Replace `ACCOUNT_ID` in `/home/david/metafirst/provider.tf` with your actual account ID
+   - Replace `account_id` in `/metafirst/terraform.tfvars` with your actual account ID
 
 3. **Then Deploy Main Application**:
    ```bash
-   cd /home/david/metafirst
+   cd <..>/metafirst/demo/core/cognito/
    terraform init
-   terraform plan --var-file=prod.tfvars
-   terraform apply --var-file=prod.tfvars
+   terraform plan 
+   terraform apply
    ```
 
 ## Important Notes

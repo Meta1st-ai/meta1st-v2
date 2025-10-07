@@ -1,3 +1,9 @@
+variable "environment" {
+  description = "Name of the environment"
+  type        = string
+  
+}
+
 variable "pool_name" {
   description = "Name of the Cognito User Pool"
   type        = string

@@ -1,7 +1,7 @@
 data "aws_region" "current" {}
 
 resource "aws_cognito_user_pool" "admin_pool" {
-  name = var.pool_name
+  name = "${var.environment}-${var.pool_name}"
 
   username_configuration {
     case_sensitive = false
@@ -83,7 +83,7 @@ resource "aws_cognito_user_pool" "admin_pool" {
 
 # Domain for Admin User Pool
 resource "aws_cognito_user_pool_domain" "admin_domain" {
-  domain       = "demo-metafirst-admin-${random_string.admin_domain_suffix.result}"
+  domain       = "${var.environment}-metafirst-admin-${random_string.admin_domain_suffix.result}"
   user_pool_id = aws_cognito_user_pool.admin_pool.id
 }
 
@@ -95,7 +95,7 @@ resource "random_string" "admin_domain_suffix" {
 
 # App Client for Admin User Pool
 resource "aws_cognito_user_pool_client" "admin_app_client" {
-  name         = "demo-MetaFirst-Admin-Client"
+  name         = "${var.environment}-${var.pool_name}-Client"
   user_pool_id = aws_cognito_user_pool.admin_pool.id
 
   generate_secret               = false

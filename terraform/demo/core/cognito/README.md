@@ -20,10 +20,10 @@ This Terraform project implements the MetaFirst authentication system with AWS C
 ### 1. Deploy Backend Infrastructure First
 
 ```bash
-cd prod/backend
+cd demo/backend
 terraform init
-terraform plan -var-file="prod.tfvars"
-terraform apply -var-file="prod.tfvars"
+terraform plan 
+terraform apply
 ```
 
 ### 2. Deploy Core Application
@@ -31,8 +31,8 @@ terraform apply -var-file="prod.tfvars"
 ```bash
 cd ../core
 terraform init
-terraform plan -var-file="prod.tfvars"
-terraform apply -var-file="prod.tfvars"
+terraform plan 
+terraform apply
 ```
 
 ## Configuration
@@ -43,7 +43,7 @@ terraform apply -var-file="prod.tfvars"
 - `lambda_architecture`: Lambda architecture (default: x86_64)
 
 ### Azure AD Setup
-Update the `azure_metadata_url` variable in prod.tfvars with your Azure AD SAML metadata URL.
+Update the `azure_metadata_url` variable in terraform.tfvars with your Azure AD SAML metadata URL.
 
 ## Lambda Functions
 
@@ -62,7 +62,7 @@ The employee user pool is implemented as a reusable module to support onboarding
 
 ```
 metafirst/
-├── prod/
+├── demo/
 │   ├── backend/          # Backend infrastructure (S3, DynamoDB)
 │   └── core/             # Core application (User Pools, Lambda)
 ├── modules/              # Reusable Terraform modules

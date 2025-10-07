@@ -1,3 +1,9 @@
+variable "environment" {
+  description = "Name of the environment"
+  type        = string
+  
+}
+
 variable "azure_tenant_id" {
   description = "Azure AD Tenant ID"
   type        = string

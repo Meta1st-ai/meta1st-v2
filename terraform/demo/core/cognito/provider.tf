@@ -9,7 +9,7 @@ terraform {
 
   backend "s3" {
     bucket         = "metafirst-terraform-state-335080625271"
-    key            = "prod/cognito/terraform.tfstate"
+    key            = "demo/cognito/terraform.tfstate"
     region         = "eu-west-1"
     acl            = "bucket-owner-full-control"
     dynamodb_table = "metafirst-terraform-locks"

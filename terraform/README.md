@@ -60,4 +60,43 @@ terraform apply -var-file="prod.tfvars"
 ```
 
 
+## Creating and deploying a new environment
+
+### 1. Creating a new environment.
+If the same infrastructure needs to be deployed into a different environment, then just copy and paste the existing environment folder.
+
+When the terraform backend needs to be copied and executed as well?
+- If the new environment will go to a new account
+- If the new environment will go to a new region AND you want a separate AWS S3 bucket for the statefiles and a separate AWS DynamoDB for the lock files.
+
+In every other case the backend does not needs to be manipulated.
+
+### 2. How to deploy a new env based on an existing env?
+1. Make sure you copy paste the existing env to the newly named folder (for example dev or stage or prod etc..).
+2. Make sure that you rename the environment variable value in the ```terraform.tfvars``` (```environment             = "Demo"```)
+3. Make sure to rename the backed configuration as well in the provider.tf 
+```
+backend s3 {
+  ...
+  key    = "Demo/terraform.tfstate"
+  ...
+}
+```
+4. Run ```terraform init```, in the newly created folder
+5. Apply any changes required
+6. Run ```terraform plan``` and ```terraform apply``` according to your need.
+
+
+
+#### Example with the current infra:
+1. Copy paste the ```demo``` folder to ```dev```
+2. Change the ```environment``` variable in the ```terraform.tfvars``` file to ```Dev```
+3. Change the ```key``` value in the ```provider.tf``` file to ```Dev/terraform.tfstate```
+4. Run ```terraform init``` in the ```dev``` folder
+5. Run ```terraform plan```
+6. Run ```terraform apply```
+
+
+## Notes
+Make sure you don't change the terraform.tfvars file name to other name, else you will need to apppend ```--var-file=<filename>.tfvars``` each time you run terraform plan or apply
 

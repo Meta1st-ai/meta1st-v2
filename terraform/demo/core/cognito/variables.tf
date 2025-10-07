@@ -4,6 +4,22 @@ variable "aws_region" {
   default     = "eu-west-1"
 }
 
+variable "environment" {
+  description = "Name of the environment"
+  type        = string
+}
+
+# Cognito user pool variables
+variable "admin_user_pool_name" {
+  description = "Name of the Admin Cognito User Pool"
+  type        = string
+}
+
+variable "employee_user_pool_name" {
+  description = "Name of the Employee Cognito User Pool"
+  type        = string
+}
+
 # Cognito trigger lamba functions variables
 variable "lambda_runtime" {
   description = "Lambda runtime"
