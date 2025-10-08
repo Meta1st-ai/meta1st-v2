@@ -90,7 +90,7 @@ backend s3 {
 
 #### Example with the current infra:
 1. Copy paste the ```demo``` folder to ```dev```
-2. Change the ```environment``` variable in the ```terraform.tfvars``` file to ```Dev```
+2. Change the ```environment``` variable in the ```terraform.tfvars``` file to ```dev```
 3. Change the ```key``` value in the ```provider.tf``` file to ```Dev/terraform.tfstate```
 4. Run ```terraform init``` in the ```dev``` folder
 5. Run ```terraform plan```
@@ -98,5 +98,6 @@ backend s3 {
 
 
 ## Notes
-Make sure you don't change the terraform.tfvars file name to other name, else you will need to apppend ```--var-file=<filename>.tfvars``` each time you run terraform plan or apply
+1. Make sure you don't change the terraform.tfvars file name to other name, else you will need to apppend ```--var-file=<filename>.tfvars``` each time you run terraform plan or apply
+2. Make sure the environment variable name is lowercase letters!
 
