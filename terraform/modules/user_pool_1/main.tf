@@ -83,7 +83,7 @@ resource "aws_cognito_user_pool" "user_pool_1" {
 
 # Domain for User Pool 1
 resource "aws_cognito_user_pool_domain" "user_pool_1_domain" {
-  domain = lower(replace("${var.environment}-metafirst-${var.pool_name}-${random_string.domain_suffix.result}", "_", "-"))
+  domain       = lower(replace("${var.environment}-metafirst-${var.pool_name}-${random_string.domain_suffix.result}", "_", "-"))
   user_pool_id = aws_cognito_user_pool.user_pool_1.id
 }
 
