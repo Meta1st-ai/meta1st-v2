@@ -1,6 +1,7 @@
 data "aws_region" "current" {}
 
-resource "aws_cognito_user_pool" "employee_pool" {
+
+resource "aws_cognito_user_pool" "user_pool_2_pool" {
   name = "${var.environment}-${var.pool_name}"
 
   username_configuration {
@@ -96,7 +97,7 @@ resource "aws_cognito_user_pool" "employee_pool" {
 # SAML Identity Provider for Azure AD
 resource "aws_cognito_identity_provider" "azure_ad" {
   #count         = var.azure_metadata_url != "" ? 1 : 0
-  user_pool_id  = aws_cognito_user_pool.employee_pool.id
+  user_pool_id  = aws_cognito_user_pool.user_pool_2_pool.id
   provider_name = "AzureAD"
   provider_type = "SAML"
 
@@ -113,12 +114,12 @@ resource "aws_cognito_identity_provider" "azure_ad" {
   }
 }
 
-# App Client for Employee User Pool
-resource "aws_cognito_user_pool_client" "employee_app_client" {
+# App Client for user_pool_2 
+resource "aws_cognito_user_pool_client" "user_pool_2_app_client" {
   name         = "${var.environment}-${var.pool_name}-Client"
-  user_pool_id = aws_cognito_user_pool.employee_pool.id
+  user_pool_id = aws_cognito_user_pool.user_pool_2_pool.id
 
-  generate_secret               = false
+  generate_secret               = true
   prevent_user_existence_errors = "ENABLED"
   explicit_auth_flows           = ["ADMIN_NO_SRP_AUTH", "USER_PASSWORD_AUTH"]
   supported_identity_providers  = ["COGNITO", "AzureAD"]
@@ -132,10 +133,23 @@ resource "aws_cognito_user_pool_client" "employee_app_client" {
 }
 
 # Domain for Hosted UI (required for SAML)
-resource "aws_cognito_user_pool_domain" "employee_domain" {
-  domain       = "${var.environment}-metafirst-employees-${random_string.domain_suffix.result}"
-  user_pool_id = aws_cognito_user_pool.employee_pool.id
+resource "aws_cognito_user_pool_domain" "user_pool_2_domain" {
+  #domain       = "${var.environment}-metafirst-${var.pool_name}-${random_string.domain_suffix.result}"
+  domain = lower(replace("${var.environment}-metafirst-${var.pool_name}-${random_string.domain_suffix.result}", "_", "-"))
+  user_pool_id = aws_cognito_user_pool.user_pool_2_pool.id
 }
+
+# Cognito User Groups
+resource "aws_cognito_user_group" "employee" {
+  user_pool_id = aws_cognito_user_pool.user_pool_2_pool.id
+  name         = "employee"
+}
+
+resource "aws_cognito_user_group" "admin" {
+  user_pool_id = aws_cognito_user_pool.user_pool_2_pool.id
+  name         = "admin"
+}
+
 
 resource "random_string" "domain_suffix" {
   length  = 8

@@ -1,11 +1,11 @@
 ####################################################################
 # Admin User Pool Module
 ####################################################################
-module "admin_user_pool" {
-  source = "../../../modules/admin-user-pool"
+module "user_pool_1" {
+  source = "../../../modules/user_pool_1"
 
   environment               = var.environment
-  pool_name                 = var.admin_user_pool_name
+  pool_name                 = var.user_pool_1_name
   pre_auth_lambda_arn       = module.lambda_functions.pre_auth_arn
   post_auth_lambda_arn      = module.lambda_functions.post_auth_arn
   user_migration_lambda_arn = module.lambda_functions.user_migration_arn
@@ -14,11 +14,11 @@ module "admin_user_pool" {
 ####################################################################
 # Employee User Pool Module
 ####################################################################
-module "employee_user_pool" {
-  source = "../../../modules/employee-user-pool"
+module "user_pool_2" {
+  source = "../../../modules/user_pool_2"
 
   environment               = var.environment
-  pool_name                 = var.employee_user_pool_name
+  pool_name                 = var.user_pool_2_name
   aws_region                = var.aws_region
   azure_metadata_url        = var.azure_metadata_url
   pre_auth_lambda_arn       = module.lambda_functions.pre_auth_arn
@@ -49,6 +49,6 @@ module "sync_cognito_azuread" {
   azure_client_secret      = var.azure_client_secret
   sync_lambda_runtime      = var.sync_lambda_runtime
   sync_lambda_architecture = var.sync_lambda_architecture
-  cognito_user_pool_id     = module.employee_user_pool.user_pool_id
+  cognito_user_pool_id     = module.user_pool_2.user_pool_id
   aws_region               = var.aws_region
 }

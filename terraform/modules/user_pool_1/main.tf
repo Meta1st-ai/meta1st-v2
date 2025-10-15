@@ -1,6 +1,6 @@
 data "aws_region" "current" {}
 
-resource "aws_cognito_user_pool" "admin_pool" {
+resource "aws_cognito_user_pool" "user_pool_1" {
   name = "${var.environment}-${var.pool_name}"
 
   username_configuration {
@@ -81,24 +81,24 @@ resource "aws_cognito_user_pool" "admin_pool" {
   }
 }
 
-# Domain for Admin User Pool
-resource "aws_cognito_user_pool_domain" "admin_domain" {
-  domain       = "${var.environment}-metafirst-admin-${random_string.admin_domain_suffix.result}"
-  user_pool_id = aws_cognito_user_pool.admin_pool.id
+# Domain for User Pool 1
+resource "aws_cognito_user_pool_domain" "user_pool_1_domain" {
+  domain = lower(replace("${var.environment}-metafirst-${var.pool_name}-${random_string.domain_suffix.result}", "_", "-"))
+  user_pool_id = aws_cognito_user_pool.user_pool_1.id
 }
 
-resource "random_string" "admin_domain_suffix" {
+resource "random_string" "domain_suffix" {
   length  = 8
   special = false
   upper   = false
 }
 
-# App Client for Admin User Pool
-resource "aws_cognito_user_pool_client" "admin_app_client" {
+# App Client for  User Pool 1
+resource "aws_cognito_user_pool_client" "user_pool_1_app_client" {
   name         = "${var.environment}-${var.pool_name}-Client"
-  user_pool_id = aws_cognito_user_pool.admin_pool.id
+  user_pool_id = aws_cognito_user_pool.user_pool_1.id
 
-  generate_secret               = false
+  generate_secret               = true
   prevent_user_existence_errors = "ENABLED"
   explicit_auth_flows           = ["ADMIN_NO_SRP_AUTH", "USER_PASSWORD_AUTH"]
   supported_identity_providers  = ["COGNITO"]
