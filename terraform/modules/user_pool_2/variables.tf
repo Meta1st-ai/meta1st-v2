@@ -1,11 +1,21 @@
 variable "environment" {
   description = "Name of the environment"
   type        = string
-  
+
 }
 
 variable "pool_name" {
   description = "Name of the Cognito User Pool"
+  type        = string
+}
+
+variable "aws_region" {
+  description = "AWS region"
+  type        = string
+}
+
+variable "azure_metadata_url" {
+  description = "Azure AD SAML metadata URL"
   type        = string
 }
 

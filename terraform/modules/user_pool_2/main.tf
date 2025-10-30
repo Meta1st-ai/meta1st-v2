@@ -1,6 +1,7 @@
 data "aws_region" "current" {}
 
-resource "aws_cognito_user_pool" "employee_pool" {
+
+resource "aws_cognito_user_pool" "user_pool_2_pool" {
   name = "${var.environment}-${var.pool_name}"
 
   username_configuration {
@@ -96,35 +97,42 @@ resource "aws_cognito_user_pool" "employee_pool" {
 # SAML Identity Provider for Azure AD
 resource "aws_cognito_identity_provider" "azure_ad" {
   #count         = var.azure_metadata_url != "" ? 1 : 0
-  user_pool_id  = aws_cognito_user_pool.employee_pool.id
+  user_pool_id  = aws_cognito_user_pool.user_pool_2_pool.id
   provider_name = "AzureAD"
   provider_type = "SAML"
 
   provider_details = {
-    MetadataURL = var.azure_metadata_url
+    MetadataURL                 = var.azure_metadata_url
+    ActiveEncryptionCertificate = "MIICvTCCAaWgAwIBAgIJAPJfivOcQJLaMA0GCSqGSIb3DQEBCwUAMB4xHDAaBgNVBAMME2V1LXdlc3QtMV9rMVV0OXpBcW0wHhcNMjUxMDE0MTIyMTUzWhcNMzUxMDE0MjIzMzUzWjAeMRwwGgYDVQQDDBNldS13ZXN0LTFfazFVdDl6QXFtMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArz+tWmULx3GSIiUDaOCld/IIVSJcAS0sYzzIN8sBSK7XivIDenD1VqpM3DQFQZ0ODNz8bG/9o7mCRss+MdeDbqHf9N2b5HYI3bFApqd/bBERktgxa9luGFZVqU+cxvO4jC1xv3jMjIgAKK5fCouxqmGTn+VdJ47Yq2lITvCcnfIEnQ+8wrtj/gHODN5c9lvBv0Kkswgh7j2d/UcAci1lJArrljxQVG41EeyWETPL9gnbFj9tR3vB8Pmwe+RYsDPxx8ocQEePziS08RG6Ia94Xq+8tFLKcUBspJJTeinOVzJmtWrxI7NqxtCpdttNW3yB68kps1pHNCfVYSZ991OaPQIDAQABMA0GCSqGSIb3DQEBCwUAA4IBAQBjfEmYJMefD3k0pY9Qp9rSZCG8N3KSLui6awk4akUr5TaMBAOmAlqIv82hPF63+kTNYXbv5krL+DpkRK+aYUefXTTCobhZQrGrrFbxotQ6u7cg5L+KLkaxkRjmVADGsASDRGNTUSgDPmjiD68GmKLAKlocFp+02YpLTfANrhEe5PiTdAvKpq9wuTr4ewWX+YR5xKn9dx7BLmZvdDKlfG4W0g/84x3/D0nR2Uu5e7P94srEs24Vwfz9kdzynlwseCzKba0WC4gzxAbEvtgFbhN1T2wtIHG2sgqXCC5oDonhsVHKQODSex/jrzEPLMI/wLqVky8+O5bqc7+JWPQ0qmd2"
+    SLORedirectBindingURI       = "https://login.microsoftonline.com/d5a958b0-22e0-48ea-b9df-43956dd749a4/saml2"
+    SSORedirectBindingURI       = "https://login.microsoftonline.com/d5a958b0-22e0-48ea-b9df-43956dd749a4/saml2"
   }
 
   attribute_mapping = {
-    email                = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"
-    given_name           = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname"
-    family_name          = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname"
+    email                = "email_address" #http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"
+    given_name           = "given_name"   #"http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname"
+    family_name          = "family_name"    #"http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname"
+    name                 = "name"
     "custom:auth_method" = "sso"
     "custom:groups"      = "http://schemas.microsoft.com/ws/2008/06/identity/claims/groups"
   }
 }
 
-# App Client for Employee User Pool
-resource "aws_cognito_user_pool_client" "employee_app_client" {
+# App Client for user_pool_2 
+resource "aws_cognito_user_pool_client" "user_pool_2_app_client" {
   name         = "${var.environment}-${var.pool_name}-Client"
-  user_pool_id = aws_cognito_user_pool.employee_pool.id
+  user_pool_id = aws_cognito_user_pool.user_pool_2_pool.id
 
-  generate_secret               = false
+  generate_secret               = true
   prevent_user_existence_errors = "ENABLED"
   explicit_auth_flows           = ["ADMIN_NO_SRP_AUTH", "USER_PASSWORD_AUTH"]
   supported_identity_providers  = ["COGNITO", "AzureAD"]
 
-  callback_urls = ["https://example.com/callback"]
-  logout_urls   = ["https://example.com/logout"]
+  callback_urls = [
+    "https://example.com/callback",
+    "https://jwt.io"
+  ]
+  logout_urls = ["https://example.com/logout"]
 
   allowed_oauth_flows                  = ["code"]
   allowed_oauth_scopes                 = ["email", "openid", "profile"]
@@ -132,10 +140,23 @@ resource "aws_cognito_user_pool_client" "employee_app_client" {
 }
 
 # Domain for Hosted UI (required for SAML)
-resource "aws_cognito_user_pool_domain" "employee_domain" {
-  domain       = "${var.environment}-metafirst-employees-${random_string.domain_suffix.result}"
-  user_pool_id = aws_cognito_user_pool.employee_pool.id
+resource "aws_cognito_user_pool_domain" "user_pool_2_domain" {
+  #domain       = "${var.environment}-metafirst-${var.pool_name}-${random_string.domain_suffix.result}"
+  domain       = lower(replace("${var.environment}-metafirst-${var.pool_name}-${random_string.domain_suffix.result}", "_", "-"))
+  user_pool_id = aws_cognito_user_pool.user_pool_2_pool.id
 }
+
+# Cognito User Groups
+resource "aws_cognito_user_group" "employee" {
+  user_pool_id = aws_cognito_user_pool.user_pool_2_pool.id
+  name         = "employee"
+}
+
+resource "aws_cognito_user_group" "admin" {
+  user_pool_id = aws_cognito_user_pool.user_pool_2_pool.id
+  name         = "admin"
+}
+
 
 resource "random_string" "domain_suffix" {
   length  = 8
