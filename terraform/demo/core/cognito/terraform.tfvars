@@ -1,7 +1,7 @@
 # Demo environment variables
 aws_region          = "eu-west-1"
 environment         = "demo"
-user_pool_1_name    = ""
+ #user_pool_1_name    = ""
 user_pool_2_name    = "Demo-HRM-UserPool"
 lambda_runtime      = "nodejs18.x"
 lambda_architecture = "x86_64"
