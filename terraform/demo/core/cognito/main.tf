@@ -1,15 +1,15 @@
 ####################################################################
 # Admin User Pool Module
 ####################################################################
-module "user_pool_1" {
-  source = "../../../modules/user_pool_1"
+#module "user_pool_1" {
+#  source = "../../../modules/user_pool_1"
 
-  environment               = var.environment
-  pool_name                 = var.user_pool_1_name
-  pre_auth_lambda_arn       = module.lambda_functions.pre_auth_arn
-  post_auth_lambda_arn      = module.lambda_functions.post_auth_arn
-  user_migration_lambda_arn = module.lambda_functions.user_migration_arn
-}
+ # environment               = var.environment
+ # pool_name                 = var.user_pool_1_name
+ # pre_auth_lambda_arn       = module.lambda_functions.pre_auth_arn
+ # post_auth_lambda_arn      = module.lambda_functions.post_auth_arn
+ # user_migration_lambda_arn = module.lambda_functions.user_migration_arn
+# }
 
 ####################################################################
 # Employee User Pool Module
