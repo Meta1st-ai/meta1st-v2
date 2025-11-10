@@ -10,10 +10,10 @@ variable "environment" {
 }
 
 # Cognito user pool variables
-variable "user_pool_1_name" {
-  description = "Name of the Admin Cognito User Pool"
-  type        = string
-}
+ #variable "user_pool_1_name" {
+  # description = "Name of the Admin Cognito User Pool"
+  # type        = string
+ #}
 
 variable "user_pool_2_name" {
   description = "Name of the Employee Cognito User Pool"
