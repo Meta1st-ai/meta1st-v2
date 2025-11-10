@@ -2,11 +2,11 @@
   "name": "lambda-functions",
   "version": "1.0.0",
   "description": "This module is used to create AWS Lambda functions for MetaFirst authentication triggers in AWS.",
-  "main": "lambda/post_auth.js",
-  "type": "module",
+  "main": "post_auth.js",
+  "type": "commonjs",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon lambda/post_auth.js"
+    "start": "node post_auth.js"
   },
   "keywords": [],
   "author": "",
