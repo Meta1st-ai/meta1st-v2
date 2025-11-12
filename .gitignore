@@ -31,3 +31,8 @@ terraform.rc
 
 **/node_modules/
 **/.env
+
+
+
+# Node modules (all levels)
+node_modules/
