@@ -175,6 +175,10 @@ data "aws_region" "current" {}
     prevent_user_existence_errors = "ENABLED"
     explicit_auth_flows           = ["ADMIN_NO_SRP_AUTH", "USER_PASSWORD_AUTH"]
     supported_identity_providers  = ["COGNITO", "AzureAD"]
+
+    depends_on = [
+      aws_cognito_identity_provider.azure_ad
+    ]
   
     callback_urls = [
       "http://localhost:8000/auth/sso/code/verify",
