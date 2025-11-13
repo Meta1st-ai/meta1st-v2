@@ -42,3 +42,27 @@ output "lambda_functions" {
   description = "Lambda function ARNs"
   value       = module.lambda_functions.lambda_functions
 }
+
+####################################################################
+# Outputs for Rejoice-Organisation (user_pool_rejoice_organisation)
+####################################################################
+output "user_pool_rejoice_organisation_id" {
+  description = "Rejoice-Organisation User Pool ID"
+  value       = module.user_pool_rejoice_organisation.user_pool_id
+}
+
+output "user_pool_rejoice_organisation_arn" {
+  description = "Rejoice-Organisation User Pool ARN"
+  value       = module.user_pool_rejoice_organisation.user_pool_arn
+}
+
+output "user_pool_rejoice_organisation_app_client_id" {
+  description = "Rejoice-Organisation App Client ID"
+  value       = module.user_pool_rejoice_organisation.app_client_id
+}
+
+output "user_pool_rejoice_organisation_hosted_ui_domain" {
+  description = "Rejoice-Organisation Hosted UI Domain for SAML"
+  value       = module.user_pool_rejoice_organisation.hosted_ui_domain
+}
+
