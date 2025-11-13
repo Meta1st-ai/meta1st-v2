@@ -21,7 +21,7 @@
 output "user_pool_2_id" {
   description = "Employee User Pool ID"
   value       = module.user_pool_2.user_pool_id
-}
+} 
 
 output "user_pool_2_arn" {
   description = "Employee User Pool ARN"
