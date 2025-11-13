@@ -143,7 +143,6 @@ data "aws_region" "current" {}
   
     provider_details = {
       MetadataURL                 = var.azure_metadata_url
-      ActiveEncryptionCertificate = "MIIC8DCCAdigAwIBAgIQT651FcxxK7xEz8D/wyv7ljANBgkqhkiG9w0BAQsFADA0MTIwMAYDVQQDEylNaWNyb3NvZnQgQXp1cmUgRmVkZXJhdGVkIFNTTyBDZXJ0aWZpY2F0ZTAeFw0yNTEwMDIwODA2NTdaFw0yODEwMDIwODA2NTdaMDQxMjAwBgNVBAMTKU1pY3Jvc29mdCBBenVyZSBGZWRlcmF0ZWQgU1NPIENlcnRpZmljYXRlMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAq+NeXrrs80xwAwp0At7KEIbAF4wwb7U2qQlT9KYzwlCWkPu5c97AGvfV02nrOE1QxaQZXXA+6ImoArdb4g2pKoguTzUs9ID94tnq/s1x5qSPhLhmzw/m7psCKz+fa8+j1L+boIEwbBrPxuRO6HisJb1YTBof9IlbK6RgTSm8djqLG2PAzgLA7QG9sIyexfj40hfScZXfsIuGzaDkelMVkxSQN8tzA2NvY0tR8WHKGrfj66uNA5Ps59KtR0x3JILGsyNSZ9fJ0FulgkaZ5gqb/jEI/iEntUGNiDU0l4UnscLr/zvr/KqtNJwUWiJrxKXtrhloOWy0QKw0Ep2CVjvKWQIDAQABMA0GCSqGSIb3DQEBCwUAA4IBAQACkJboQrpAOnSIchkGTTpCXgALn46enT+GnV6BOO/dRV1w9lNo8loiq7WzPXqrWYoEjoFKf9unflC4F5TGMhdqVa1k5oazcScu3rzYMHklPuMcEybkgcUsZ6n5D+8t57hh43OXJFx0zhQKok9ZfX9NdrwkE2TuLNjLUTbjtDe9ukxj1nrvBRA927pZQuBPoE8TYNq8dTy+PGhKzvUWBgUCVbTTr4SRWfnF/XGAQdK6gtO9rWLHBYra/uVCmTK1CrvPlGaKYpldNzcOQNpmsfOyqjHWVSn4DX5innF4eYtQaYr89pQ6eaX9JbIXByeS6sr25ZIPeumhjH4VByJ8Zuo0"
       SLORedirectBindingURI       = "https://login.microsoftonline.com/${var.azure_tenant_id}/saml2"
       SSORedirectBindingURI       = "https://login.microsoftonline.com/${var.azure_tenant_id}/saml2"
     }
